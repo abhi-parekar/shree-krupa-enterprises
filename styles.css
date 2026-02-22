@@ -1,3 +1,16 @@
+/* CSS Variables for Easy Theme Changes */
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --glass-bg: rgba(255, 255, 255, 0.25);
+    --glass-border: rgba(255, 255, 255, 0.18);
+    --shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --text-light: #f8f9fa;
+    --text-dark: #2c3e50;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -5,77 +18,222 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: var(--text-dark);
+    overflow-x: hidden;
 }
 
-/* Header: Fixed top-right, horizontal Flexbox */
+/* Header: Fixed top-right glass nav */
 #header {
     position: fixed;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 10px 20px;
-    border-radius: 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    top: 30px;
+    right: 30px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 50px;
+    padding: 12px 24px;
+    box-shadow: var(--shadow);
     z-index: 1000;
+}
+
+#header ul {
+    list-style: none;
     display: flex;
-    gap: 20px; /* Space between items */
+    gap: 24px;
+    align-items: center;
 }
 
-#header h5 {
-    margin: 0;
+#header button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: color 0.3s;
+    padding: 10px 16px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
-#header h5:hover {
-    color: #007bff;
+#header button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
 }
 
-/* Dashboard: Centered hero section with padding for fixed header */
+#header button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+}
+
+#header button:hover::before {
+    left: 100%;
+}
+
+/* Hero/Dashboard: Full viewport attraction */
 #dashboard-card {
     min-height: 100vh;
+    background: var(--bg-gradient);
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 150px 20px 100px; /* Top padding for header, bottom for footer */
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 180px 20px 120px; /* Space for fixed header/footer */
+    position: relative;
+}
+
+#dashboard-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="a" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="%23ffffff20"/><stop offset="100%" stop-color="%23ffffff00"/></radialGradient></defs><circle cx="20" cy="20" r="10" fill="url(%23a)"><animate attributeName="r" values="10;15;10" dur="3s" repeatCount="indefinite"/></circle></svg>') no-repeat center/cover;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
 }
 
 #dashboard-card h2 {
-    font-size: 2.5rem;
-    max-width: 600px;
-    margin: 0 auto;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--text-light);
+    max-width: 800px;
+    margin: 0 auto 20px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: fadeInUp 1s ease-out;
 }
 
-/* Footer: Bottom fixed */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Footer: Glass bottom center */
 #footer {
     position: fixed;
-    bottom: 20px;
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 15px 30px;
-    border-radius: 10px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px 40px;
+    color: var(--text-light);
+    font-size: 14px;
     max-width: 90%;
     text-align: center;
+    box-shadow: var(--shadow);
 }
 
-/* Responsive: Stack header on mobile */
+/* Responsive Magic */
 @media (max-width: 768px) {
     #header {
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
         flex-direction: column;
-        gap: 10px;
-        top: 10px;
-        right: 10px;
-        padding: 15px;
+        gap: 12px;
     }
     
-    #dashboard-card h2 {
-        font-size: 1.8rem;
+    #header ul {
+        gap: 16px;
+    }
+    
+    #dashboard-card {
+        padding: 140px 20px 100px;
+        text-align: center;
+    }
+    
+    #footer {
+        bottom: 20px;
+        padding: 16px 24px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    #header button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn span {
+    font-size: 12px;
+    margin-left: 4px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;  /* Align to right for top-right nav */
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+    min-width: 180px;
+    z-index: 1001;
+    top: 100%;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.dropdown-content a {
+    color: var(--text-light) !important;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+    font-weight: 400;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.dropdown-content a:last-child {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background: rgba(255, 255, 255, 0.2);
+    padding-left: 28px;
+}
+
+/* Show on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
